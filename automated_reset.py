@@ -9,7 +9,7 @@ def Read_from_port(ser,rommon_event ,image_event, prompt_event, switch_break_eve
     line_buffer = ""
     while ser.is_open == True:
         if ser.in_waiting > 0:
-            chunk = ser.read(ser.in_waiting).decode("utf=8",errors = "ignore")
+            chunk = ser.read(ser.in_waiting).decode("utf-8",errors = "ignore")
             line_buffer += chunk
             lines = line_buffer.split("\n")
             for line in lines[:-1]:
@@ -38,10 +38,10 @@ threading.Thread(target=Read_from_port, args=(ser, rommon_reached, image_reached
 
 while not switch_break_reached.is_set() or not image_reached.is_set():
     if switch_break_reached.is_set():
-        ser.write(bytes(str(f"{ser.send_break()}\r"), "ISO-8859-1"))
+        ser.send_break()
         break
     elif image_reached.is_set():
-        ser.write(bytes(str(f"{ser.send_break()}\r"), "ISO-8859-1"))
+        ser.send_break()
         if rommon_reached.is_set():
             break
 
