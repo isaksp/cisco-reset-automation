@@ -14,7 +14,9 @@ def Read_from_port(ser):
             lines = line_buffer.split("\n")
             for line in lines[:-1]:
                 timestamp = datetime.datetime.now().strftime("%H:%M:%S")
-                print(f"{timestamp} {line}")
+                print(f"{line}")
+                with open("log.txt", "a") as f:
+                    f.write(f"{timestamp} {line}\n")
             
             line_buffer = lines[-1]
 
@@ -28,3 +30,6 @@ while True:
         ser.send_break(1)
     else:
         ser.write(bytes(str(f"{putt}\r"), 'ISO-8859-1'))
+        timestamp = datetime.datetime.now().strftime("%H:%M:%S")
+        with open("log.txt", "a") as f:
+            f.write(f"{timestamp} {putt}\n")
